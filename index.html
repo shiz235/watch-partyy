@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>You Maniac — Watch Party 🍿</title>
+    <title>You Maniac — Episode 2 | Watch Party</title>
 
     <style>
         * {
@@ -28,25 +28,25 @@
             font-size: 30px;
         }
 
-        p {
-            margin: 0;
+        .subtitle {
             color: #aaa;
+            margin: 0;
         }
 
-        .player-container {
+        .player {
             width: 95%;
             max-width: 1200px;
-            margin: 10px auto 30px;
+            margin: 10px auto 25px;
             background: #000;
             border-radius: 10px;
             overflow: hidden;
             aspect-ratio: 16 / 9;
         }
 
-        .player-container iframe {
+        .player iframe {
             width: 100%;
             height: 100%;
-            border: none;
+            border: 0;
         }
 
         .info {
@@ -62,50 +62,56 @@
             margin-top: 0;
         }
 
-        .status {
-            color: #aaa;
-            font-size: 14px;
+        .watch-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
         }
 
-        .room {
-            margin-top: 15px;
-            padding: 12px;
-            background: #222;
-            border-radius: 6px;
-            text-align: center;
+        .watch-button:hover {
+            background: #444;
         }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <h1>🍿 You Maniac — Watch Party</h1>
-        <p>Episode 2</p>
-    </header>
+<header>
+    <h1>🍿 You Maniac — Watch Party</h1>
+    <p class="subtitle">Episode 2</p>
+</header>
 
-    <div class="player-container">
+<div class="player">
 
-        <iframe
-            src="https://kisskh.co/Drama/You-Maniac--2026-/Episode-2?id=13609&ep=223345&page=0&pageSize=100"
-            allowfullscreen>
-        </iframe>
+    <iframe
+        src="https://kisskh.co/Drama/You-Maniac--2026-/Episode-2?id=13609&ep=223345&page=0&pageSize=100"
+        allowfullscreen
+        allow="autoplay; fullscreen">
+    </iframe>
 
-    </div>
+</div>
 
-    <div class="info">
+<div class="info">
 
-        <h2>🎬 You Maniac — Episode 2</h2>
+    <h2>🎬 You Maniac — Episode 2</h2>
 
-        <p class="status">
-            Watch together with your friends.
-        </p>
+    <p>
+        The episode is loaded from the KissKH page above.
+    </p>
 
-        <div class="room">
-            👥 Watch Party Room
-        </div>
+    <a
+        class="watch-button"
+        href="https://kisskh.co/Drama/You-Maniac--2026-/Episode-2?id=13609&ep=223345&page=0&pageSize=100"
+        target="_blank"
+        rel="noopener noreferrer">
+        Open Episode on KissKH
+    </a>
 
-    </div>
+</div>
 
 </body>
 </html>
