@@ -3,115 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>You Maniac — Episode 2 | Watch Party</title>
+    <title>Watch Party 🍿</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         body {
             margin: 0;
-            background: #0d0d0d;
+            min-height: 100vh;
+            background: #111;
             color: white;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
-        header {
-            text-align: center;
-            padding: 25px 15px;
+        .container {
+            background: #1c1c1c;
+            padding: 40px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         h1 {
-            margin: 0 0 8px;
-            font-size: 30px;
-        }
-
-        .subtitle {
-            color: #aaa;
-            margin: 0;
-        }
-
-        .player {
-            width: 95%;
-            max-width: 1200px;
-            margin: 10px auto 25px;
-            background: #000;
-            border-radius: 10px;
-            overflow: hidden;
-            aspect-ratio: 16 / 9;
-        }
-
-        .player iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        .info {
-            width: 95%;
-            max-width: 1200px;
-            margin: 0 auto 30px;
-            padding: 20px;
-            background: #181818;
-            border-radius: 10px;
-        }
-
-        .info h2 {
             margin-top: 0;
+            font-size: 32px;
+        }
+
+        p {
+            color: #aaa;
+            line-height: 1.6;
         }
 
         .watch-button {
             display: inline-block;
-            margin-top: 15px;
-            padding: 12px 20px;
-            background: #333;
+            margin-top: 20px;
+            padding: 15px 25px;
+            background: #6c5ce7;
             color: white;
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
         }
 
         .watch-button:hover {
-            background: #444;
+            opacity: 0.85;
         }
     </style>
 </head>
 
 <body>
 
-<header>
-    <h1>🍿 You Maniac — Watch Party</h1>
-    <p class="subtitle">Episode 2</p>
-</header>
+    <div class="container">
 
-<div class="player">
+        <h1>🍿 Watch Party</h1>
 
-    <iframe
-        src="https://kisskh.co/Drama/You-Maniac--2026-/Episode-2?id=13609&ep=223345&page=0&pageSize=100"
-        allowfullscreen
-        allow="autoplay; fullscreen">
-    </iframe>
+        <h2>You Maniac — Episode 2</h2>
 
-</div>
+        <p>
+            Click below to open Episode 2 and watch with everyone.
+        </p>
 
-<div class="info">
+        <a
+            class="watch-button"
+            href="https://kisskh.co/Drama/You-Maniac--2026-/Episode-2?id=13609&ep=223345&page=0&pageSize=100"
+            target="_blank"
+            rel="noopener noreferrer">
+            ▶ Watch Episode 2
+        </a>
 
-    <h2>🎬 You Maniac — Episode 2</h2>
-
-    <p>
-        The episode is loaded from the KissKH page above.
-    </p>
-
-    <a
-        class="watch-button"
-        href="https://kisskh.co/Drama/You-Maniac--2026-/Episode-2?id=13609&ep=223345&page=0&pageSize=100"
-        target="_blank"
-        rel="noopener noreferrer">
-        Open Episode on KissKH
-    </a>
-
-</div>
+    </div>
 
 </body>
 </html>
