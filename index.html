@@ -1,41 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watch Party 🍿</title>
+
+    <title>You Maniac — Watch Party 🍿</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
-            background: #111;
+            background: #0d0d0d;
             color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         header {
-            padding: 25px;
+            text-align: center;
+            padding: 25px 15px;
         }
 
         h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        p {
             margin: 0;
-        }
-
-        #player {
-            width: 90%;
-            max-width: 1000px;
-            height: 600px;
-            margin: 20px auto;
-            background: #222;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .message {
             color: #aaa;
-            font-size: 20px;
+        }
+
+        .player-container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 10px auto 30px;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+        }
+
+        .player-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .info {
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            padding: 20px;
+            background: #181818;
+            border-radius: 10px;
+        }
+
+        .info h2 {
+            margin-top: 0;
+        }
+
+        .status {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .room {
+            margin-top: 15px;
+            padding: 12px;
+            background: #222;
+            border-radius: 6px;
+            text-align: center;
         }
     </style>
 </head>
@@ -43,14 +80,31 @@
 <body>
 
     <header>
-        <h1>🍿 Watch Party</h1>
-        <p>Watching together</p>
+        <h1>🍿 You Maniac — Watch Party</h1>
+        <p>Episode 2</p>
     </header>
 
-    <div id="player">
-        <div class="message">
-            Video player will go here
+    <div class="player-container">
+
+        <iframe
+            src="https://kisskh.co/Drama/You-Maniac--2026-/Episode-2?id=13609&ep=223345&page=0&pageSize=100"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+
+    <div class="info">
+
+        <h2>🎬 You Maniac — Episode 2</h2>
+
+        <p class="status">
+            Watch together with your friends.
+        </p>
+
+        <div class="room">
+            👥 Watch Party Room
         </div>
+
     </div>
 
 </body>
