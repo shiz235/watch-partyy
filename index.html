@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watch Party 🍿</title>
+
+    <title>🍿 Watch Party</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             min-height: 100vh;
@@ -15,67 +22,854 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center;
+            padding: 20px;
         }
 
         .container {
+            width: 100%;
+            max-width: 600px;
             background: #1c1c1c;
-            padding: 40px;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
         }
 
         h1 {
             margin-top: 0;
-            font-size: 32px;
+            font-size: 34px;
         }
 
-        p {
+        h2 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
             color: #aaa;
-            line-height: 1.6;
+            margin-bottom: 25px;
         }
 
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 10px;
+            background: #292929;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        button,
         .watch-button {
             display: inline-block;
-            margin-top: 20px;
-            padding: 15px 25px;
+            border: none;
+            padding: 14px 22px;
+            margin: 8px 4px;
+            border-radius: 10px;
             background: #6c5ce7;
             color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
             text-decoration: none;
-            border-radius: 10px;
-            font-size: 18px;
+        }
+
+        button:hover,
+        .watch-button:hover {
+            opacity: 0.85;
+        }
+
+        .secondary {
+            background: #333;
+        }
+
+        .danger {
+            background: #c0392b;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .room-box {
+            background: #252525;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .room-code {
+            font-size: 30px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #a29bfe;
+        }
+
+        .status {
+            color: #aaa;
+            margin: 15px 0;
+        }
+
+        .people {
+            margin: 20px 0;
+            color: #ddd;
+        }
+
+        .countdown {
+            font-size: 80px;
+            font-weight: bold;
+            margin: 25px 0;
+            min-height: 95px;
+        }
+
+        .instructions {
+            background: #252525;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: left;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        .ready {
+            color: #55efc4;
             font-weight: bold;
         }
 
-        .watch-button:hover {
-            opacity: 0.85;
+        .not-ready {
+            color: #fdcb6e;
+        }
+
+        .time {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 15px;
+        }
+
+        .message {
+            margin-top: 15px;
+            min-height: 20px;
+            color: #aaa;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
+
+    <!-- JOIN SCREEN -->
+
+    <div id="joinScreen">
 
         <h1>🍿 Watch Party</h1>
 
         <h2>You Maniac — Episode 2</h2>
 
-        <p>
-            Click below to open Episode 2 and watch with everyone.
+        <p class="subtitle">
+            Watch together with your friends.
         </p>
 
-        <a
-    class="watch-button"
-    href="https://kisskh.co/Drama/You-Maniac--2026-/Episode-2?id=13609&ep=223345&page=0&pageSize=100"
-    target="_blank"
-    rel="noopener noreferrer">
-    ▶ Watch Episode 2
-</a>
+        <input
+            id="nameInput"
+            type="text"
+            placeholder="Your name"
+            maxlength="20"
+        >
+
+        <input
+            id="roomInput"
+            type="text"
+            placeholder="Room code"
+            maxlength="10"
+        >
+
+        <button onclick="joinRoom()">
+            Join Room
+        </button>
+
+        <button class="secondary" onclick="createRoom()">
+            Create New Room
+        </button>
+
+        <div class="message" id="joinMessage"></div>
 
     </div>
+
+
+    <!-- ROOM SCREEN -->
+
+    <div id="roomScreen" class="hidden">
+
+        <h1>🍿 Watch Party</h1>
+
+        <h2>You Maniac — Episode 2</h2>
+
+        <div class="room-box">
+
+            <div>ROOM CODE</div>
+
+            <div class="room-code" id="roomCodeDisplay"></div>
+
+            <button class="secondary" onclick="copyRoomLink()">
+                Copy Room Link
+            </button>
+
+        </div>
+
+        <div class="people">
+            👥 <span id="peopleCount">1</span> person(s) in the room
+        </div>
+
+        <div class="status" id="status">
+            Connecting...
+        </div>
+
+        <button onclick="readyUp()" id="readyButton">
+            ✅ I'm Ready
+        </button>
+
+        <button onclick="startParty()" id="startButton">
+            ▶ Start Watch Party
+        </button>
+
+        <div class="countdown" id="countdown"></div>
+
+        <a
+            id="watchButton"
+            class="watch-button hidden"
+            href="https://kisskh.co/Drama/You-Maniac--2026-/Episode-2?id=13609&ep=223345&page=0&pageSize=100"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            ▶ Open Episode 2
+        </a>
+
+        <div class="time">
+            Shared Time: <span id="sharedTime">00:00</span>
+        </div>
+
+        <button class="secondary" onclick="sendPause()">
+            ⏸ Pause
+        </button>
+
+        <button class="secondary" onclick="sendPlay()">
+            ▶ Play
+        </button>
+
+        <button class="secondary" onclick="sendSync()">
+            🔄 Sync Me
+        </button>
+
+        <div class="instructions">
+
+            <strong>How to watch together:</strong>
+
+            <ol>
+                <li>Everyone joins this room.</li>
+                <li>Everyone clicks <b>I'm Ready</b>.</li>
+                <li>The host clicks <b>Start Watch Party</b>.</li>
+                <li>Everyone gets the same countdown.</li>
+                <li>Click <b>Open Episode 2</b>.</li>
+                <li>Keep this page open in one tab and the episode in another.</li>
+                <li>Use the shared Play/Pause instructions to stay together.</li>
+            </ol>
+
+            <p>
+                ⚠️ The KissKH player itself cannot be remotely controlled
+                from this page because it is on a different website.
+            </p>
+
+        </div>
+
+        <button class="danger" onclick="leaveRoom()">
+            Leave Room
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // =========================================================
+    // SUPABASE SETTINGS
+    // =========================================================
+
+    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
+
+    const SUPABASE_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+    // =========================================================
+    // WATCH PARTY SETTINGS
+    // =========================================================
+
+    const EPISODE_URL =
+        "https://kisskh.co/Drama/You-Maniac--2026-/Episode-2?id=13609&ep=223345&page=0&pageSize=100";
+
+
+    let channel = null;
+
+    let roomCode = "";
+
+    let myName = "";
+
+    let isHost = false;
+
+    let isReady = false;
+
+    let people = {};
+
+    let sharedStartTime = null;
+
+    let timerInterval = null;
+
+
+    // =========================================================
+    // PAGE LOAD
+    // =========================================================
+
+    window.onload = function () {
+
+        const params = new URLSearchParams(window.location.search);
+
+        const roomFromURL = params.get("room");
+
+        if (roomFromURL) {
+
+            document.getElementById("roomInput").value =
+                roomFromURL;
+
+        }
+
+    };
+
+
+    // =========================================================
+    // CREATE ROOM
+    // =========================================================
+
+    function createRoom() {
+
+        const name =
+            document.getElementById("nameInput").value.trim();
+
+        if (!name) {
+
+            document.getElementById("joinMessage").innerText =
+                "Enter your name first.";
+
+            return;
+        }
+
+        myName = name;
+
+        roomCode =
+            Math.random()
+            .toString(36)
+            .substring(2, 8)
+            .toUpperCase();
+
+        isHost = true;
+
+        enterRoom();
+
+    }
+
+
+    // =========================================================
+    // JOIN ROOM
+    // =========================================================
+
+    function joinRoom() {
+
+        const name =
+            document.getElementById("nameInput").value.trim();
+
+        const room =
+            document.getElementById("roomInput").value.trim().toUpperCase();
+
+        if (!name) {
+
+            document.getElementById("joinMessage").innerText =
+                "Enter your name.";
+
+            return;
+        }
+
+        if (!room) {
+
+            document.getElementById("joinMessage").innerText =
+                "Enter a room code.";
+
+            return;
+        }
+
+        myName = name;
+
+        roomCode = room;
+
+        isHost = false;
+
+        enterRoom();
+
+    }
+
+
+    // =========================================================
+    // ENTER ROOM
+    // =========================================================
+
+    async function enterRoom() {
+
+        document.getElementById("joinScreen")
+            .classList.add("hidden");
+
+        document.getElementById("roomScreen")
+            .classList.remove("hidden");
+
+        document.getElementById("roomCodeDisplay")
+            .innerText = roomCode;
+
+        history.replaceState(
+            null,
+            "",
+            "?room=" + roomCode
+        );
+
+
+        channel = supabaseClient.channel(
+            "watch-party-" + roomCode,
+            {
+                config: {
+                    broadcast: {
+                        self: false
+                    },
+                    presence: {
+                        key: myName
+                    }
+                }
+            }
+        );
+
+
+        // RECEIVE WATCH PARTY EVENTS
+
+        channel.on(
+            "broadcast",
+            { event: "party-start" },
+            payload => {
+
+                const startAt =
+                    payload.payload.startAt;
+
+                beginCountdown(startAt);
+
+            }
+        );
+
+
+        channel.on(
+            "broadcast",
+            { event: "ready" },
+            payload => {
+
+                people[payload.payload.name] = true;
+
+                updatePeople();
+
+            }
+        );
+
+
+        channel.on(
+            "broadcast",
+            { event: "control" },
+            payload => {
+
+                const action =
+                    payload.payload.action;
+
+                if (action === "play") {
+
+                    showMessage("▶ " +
+                        payload.payload.name +
+                        " says PLAY");
+
+                }
+
+                if (action === "pause") {
+
+                    showMessage("⏸ " +
+                        payload.payload.name +
+                        " says PAUSE");
+
+                }
+
+                if (action === "sync") {
+
+                    showMessage("🔄 " +
+                        payload.payload.name +
+                        " is syncing.");
+
+                }
+
+            }
+        );
+
+
+        // PRESENCE
+
+        channel.on(
+            "presence",
+            { event: "sync" },
+            () => {
+
+                const state =
+                    channel.presenceState();
+
+                people = {};
+
+                Object.keys(state).forEach(key => {
+
+                    people[key] = true;
+
+                });
+
+                updatePeople();
+
+            }
+        );
+
+
+        channel.on(
+            "presence",
+            { event: "join" },
+            ({ newPresences }) => {
+
+                updatePeople();
+
+            }
+        );
+
+
+        channel.on(
+            "presence",
+            { event: "leave" },
+            ({ leftPresences }) => {
+
+                updatePeople();
+
+            }
+        );
+
+
+        // CONNECT
+
+        channel.subscribe(async status => {
+
+            if (status === "SUBSCRIBED") {
+
+                document.getElementById("status")
+                    .innerText =
+                    "🟢 Connected to room";
+
+                await channel.track({
+
+                    name: myName,
+
+                    online_at:
+                        new Date().toISOString()
+
+                });
+
+            }
+
+            if (status === "CHANNEL_ERROR") {
+
+                document.getElementById("status")
+                    .innerText =
+                    "❌ Could not connect to room.";
+
+            }
+
+        });
+
+    }
+
+
+    // =========================================================
+    // READY
+    // =========================================================
+
+    async function readyUp() {
+
+        isReady = true;
+
+        document.getElementById("readyButton")
+            .innerText =
+            "✅ Ready!";
+
+        document.getElementById("readyButton")
+            .classList.add("secondary");
+
+
+        await channel.send({
+
+            type: "broadcast",
+
+            event: "ready",
+
+            payload: {
+
+                name: myName
+
+            }
+
+        });
+
+    }
+
+
+    // =========================================================
+    // START PARTY
+    // =========================================================
+
+    async function startParty() {
+
+        if (!isHost) {
+
+            showMessage(
+                "Only the person who created the room can start it."
+            );
+
+            return;
+
+        }
+
+
+        const startAt =
+            Date.now() + 5000;
+
+
+        await channel.send({
+
+            type: "broadcast",
+
+            event: "party-start",
+
+            payload: {
+
+                startAt: startAt
+
+            }
+
+        });
+
+
+        beginCountdown(startAt);
+
+    }
+
+
+    // =========================================================
+    // COUNTDOWN
+    // =========================================================
+
+    function beginCountdown(startAt) {
+
+        document.getElementById("watchButton")
+            .classList.remove("hidden");
+
+
+        if (timerInterval) {
+
+            clearInterval(timerInterval);
+
+        }
+
+
+        timerInterval =
+            setInterval(() => {
+
+                const remaining =
+                    startAt - Date.now();
+
+
+                if (remaining <= 0) {
+
+                    document.getElementById("countdown")
+                        .innerText = "GO! 🍿";
+
+                    clearInterval(timerInterval);
+
+                    setTimeout(() => {
+
+                        document.getElementById("countdown")
+                            .innerText = "";
+
+                    }, 1500);
+
+                    return;
+
+                }
+
+
+                const seconds =
+                    Math.ceil(remaining / 1000);
+
+
+                document.getElementById("countdown")
+                    .innerText = seconds;
+
+            }, 50);
+
+    }
+
+
+    // =========================================================
+    // PEOPLE COUNT
+    // =========================================================
+
+    function updatePeople() {
+
+        const count =
+            Object.keys(people).length;
+
+        document.getElementById("peopleCount")
+            .innerText = count;
+
+    }
+
+
+    // =========================================================
+    // CONTROLS
+    // =========================================================
+
+    async function sendPlay() {
+
+        await channel.send({
+
+            type: "broadcast",
+
+            event: "control",
+
+            payload: {
+
+                action: "play",
+
+                name: myName
+
+            }
+
+        });
+
+    }
+
+
+    async function sendPause() {
+
+        await channel.send({
+
+            type: "broadcast",
+
+            event: "control",
+
+            payload: {
+
+                action: "pause",
+
+                name: myName
+
+            }
+
+        });
+
+    }
+
+
+    async function sendSync() {
+
+        await channel.send({
+
+            type: "broadcast",
+
+            event: "control",
+
+            payload: {
+
+                action: "sync",
+
+                name: myName
+
+            }
+
+        });
+
+    }
+
+
+    // =========================================================
+    // COPY ROOM LINK
+    // =========================================================
+
+    function copyRoomLink() {
+
+        const link =
+            window.location.origin +
+            window.location.pathname +
+            "?room=" +
+            roomCode;
+
+        navigator.clipboard.writeText(link);
+
+        showMessage(
+            "Room link copied! Send it to your friend."
+        );
+
+    }
+
+
+    // =========================================================
+    // MESSAGE
+    // =========================================================
+
+    function showMessage(text) {
+
+        document.getElementById("status")
+            .innerText = text;
+
+    }
+
+
+    // =========================================================
+    // LEAVE
+    // =========================================================
+
+    async function leaveRoom() {
+
+        if (channel) {
+
+            await supabaseClient
+                .removeChannel(channel);
+
+        }
+
+        window.location.href =
+            window.location.pathname;
+
+    }
+
+</script>
 
 </body>
 </html>
